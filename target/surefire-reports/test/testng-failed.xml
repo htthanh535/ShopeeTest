@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" verbose="0" name="Failed suite [test]">
+  <test thread-count="5" verbose="0" name="Test_1(failed)">
+    <classes>
+      <class name="test.LoginTest">
+        <methods>
+          <include name="constructerWebDriver"/>
+          <include name="loginWithEmptyUserNameAndPassword"/>
+          <include name="closeBrowser"/>
+          <include name="setup"/>
+        </methods>
+      </class> <!-- test.LoginTest -->
+    </classes>
+  </test> <!-- Test_1(failed) -->
+</suite> <!-- Failed suite [test] -->
