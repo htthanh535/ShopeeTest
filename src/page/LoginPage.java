@@ -7,18 +7,23 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 public class LoginPage extends Base {
-    
-    @FindBy(id="loginEmail")
-    WebElement userName;
-    
-    @FindBy(id="password")
-    WebElement password; 
-    
-    @FindBy(xpath="(//h1)[2]")
+	
+	public static final String URL_LOGIN_PAGE = "https://phptravels.org/index.php?rp=/login";
+	
+    @FindBy(tagName="h1")
     WebElement loginTitle;
     
-    @FindBy(xpath="//button[text()='Login']")
-    WebElement buttonLogin;
+    @FindBy(id="email")
+    WebElement userName;
+    
+    @FindBy(id="passwd")
+    WebElement password; 
+    
+    @FindBy(id="SubmitLogin")
+    WebElement buttonSignIn;
+    
+    @FindBy(xpath="(//div[contains(@class,'alert')])[1]")
+    WebElement alertMessage;
     
     public LoginPage(WebDriver driver){
     	super(driver);
@@ -26,43 +31,29 @@ public class LoginPage extends Base {
         PageFactory.initElements(driver, this);
     }
 
-    //Set user name in textbox
     public void setUserName(String strUserName){
     	System.out.println("Set user name: " + strUserName);
     	userName.sendKeys(strUserName);     
     }
 
-    //Set password in password textbox
     public void setPassword(String strPassword){
     	System.out.println("Set user password: " + strPassword);
     	password.sendKeys(strPassword);
     }
 
-    //Click on login button
-    public void clickLogin(){
-    	System.out.println("Click button login");
-    	buttonLogin.click();
+    public void clickButtonSignIn(){
+    	System.out.println("Click button sign in");
+    	buttonSignIn.click();
     }  
 
-    //Get the title of Login Page
     public void verifyTheLoginTitleShouldBe(String title){
     	System.out.println("Verify The Site Name Title Should Be: " + title);
     	Assert.assertEquals(waitUntilElementToBeClickable(loginTitle).getText().trim(), title);
     }
-
-    /**
-     * This POM method will be exposed in test case to login in the application
-     * @param strUserName
-     * @param strPasword
-     * @return
-     */
-    public void loginToANotePad(String strUserName,String strPasword){
-        //Fill user name
-        this.setUserName(strUserName);
-        //Fill password
-        this.setPassword(strPasword);
-        //Click Login button
-        this.clickLogin();           
+    
+    public void verifyAlertMessageShouldBe(String message){
+    	System.out.println("Verify The Alert Message Title Should Be: " + message);
+    	Assert.assertEquals(waitUntilElementToBeClickable(alertMessage).getText().trim(), message);
     }
 
 }

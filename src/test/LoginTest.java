@@ -2,6 +2,7 @@ package test;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -23,36 +24,87 @@ public class LoginTest {
     HeaderPage headerPage;
     LoginPage loginPage;
     
-    @BeforeClass
-    public void constructerWebDriver() {
+    @BeforeMethod
+    public void setup(){
     	System.setProperty("webdriver.gecko.driver", driverPath);
-        driver = new FirefoxDriver();
+    	DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+    	capabilities.setCapability("marionette",true);
+    	driver= new FirefoxDriver(capabilities);
+    	driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         headerPage = new HeaderPage(driver);
         loginPage = new LoginPage(driver);
-    }
-    
-    @BeforeMethod
-    public void setup(){
-
-        driver.get("https://anotepad.com/");
+    	
+        driver.get("http://automationpractice.com/index.php");
     }
 
-    /**
-     * This test go to 
-     * Verify login page title
-     * Login to application
-     * Verify the home page using
-     */
     @Test(priority=0)
     public void loginWithEmptyUserNameAndPassword(){
     	
-    	headerPage.verifyTheSiteNameTitleShouldBe("aNotepad.com");
 	    //click button register login
-    	headerPage.clickOnButtonRegisterLogin();
-    	loginPage.verifyTheLoginTitleShouldBe("Login");
-    	loginPage.loginToANotePad("", "");
+    	headerPage.verifyHomeLogoShouldDisplay();
+    	headerPage.clickLogin();
+    	loginPage.verifyTheLoginTitleShouldBe("AUTHENTICATION");
 
+    	loginPage.setUserName("");
+        //Fill password
+    	loginPage.setPassword("");
+        //Click Login button
+    	loginPage.clickButtonSignIn(); 
+    	loginPage.verifyAlertMessageShouldBe("There is 1 error\nAn email address required.");
+    	
+    	System.out.println(">>>>>> TEST PASSED >>>>>>");
+    }
+    
+    @Test(priority=1)
+    public void loginWithInvalidEmail(){
+
+	    //click button register login
+    	headerPage.verifyHomeLogoShouldDisplay();
+    	headerPage.clickLogin();
+    	loginPage.verifyTheLoginTitleShouldBe("AUTHENTICATION");
+
+    	loginPage.setUserName("abc");
+        //Fill password
+    	loginPage.setPassword("abc");
+        //Click Login button
+    	loginPage.clickButtonSignIn(); 
+    	loginPage.verifyAlertMessageShouldBe("There is 1 error\nInvalid email address.");
+    	System.out.println(">>>>>> TEST PASSED >>>>>>");
+    }
+    
+    @Test(priority=2)
+    public void loginWithWrongPassword(){
+
+	    //click button register login
+    	headerPage.verifyHomeLogoShouldDisplay();
+    	headerPage.clickLogin();
+    	loginPage.verifyTheLoginTitleShouldBe("AUTHENTICATION");
+
+    	loginPage.setUserName("htthanh535@gmail.com");
+        //Fill password
+    	loginPage.setPassword("123");
+        //Click Login button
+    	loginPage.clickButtonSignIn(); 
+    	loginPage.verifyAlertMessageShouldBe("There is 1 error\nInvalid password.");
+    	System.out.println(">>>>>> TEST PASSED >>>>>>");
+    }
+    
+    @Test(priority=3)
+    public void loginWithExactlyPassword(){
+
+	    //click button register login
+    	headerPage.verifyHomeLogoShouldDisplay();
+    	headerPage.clickLogin();
+    	loginPage.verifyTheLoginTitleShouldBe("AUTHENTICATION");
+
+    	loginPage.setUserName("htthanh535@gmail.com");
+        //Fill password
+    	loginPage.setPassword("Admin123");
+        //Click Login button
+    	loginPage.clickButtonSignIn(); 
+    	headerPage.verifyUserNameLoggedInShouldBe("Thanh Huynh");
+    	System.out.println(">>>>>> TEST PASSED >>>>>>");
     }
     
     @AfterMethod(alwaysRun = true)

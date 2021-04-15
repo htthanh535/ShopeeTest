@@ -7,12 +7,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 public class HeaderPage extends Base {
-
-    @FindBy(css=".container > a")
-    WebElement siteNameTitle;
     
-    @FindBy(css=".nav a[href='/create_account']")
-    WebElement buttonRegisterLogin;
+	public static final String LOGO_IMAGE = "http://automationpractice.com/img/logo.jpg";
+	
+    @FindBy(css=".logo")
+    WebElement logo;
+    
+    @FindBy(css=".login")
+    WebElement buttonLogin;
+    
+    @FindBy(css=".account")
+    WebElement userLoggedIn;
 
     public HeaderPage(WebDriver driver){
     	super(driver);
@@ -20,13 +25,20 @@ public class HeaderPage extends Base {
         PageFactory.initElements(driver, this);
     }
 
-    public void verifyTheSiteNameTitleShouldBe(String siteName){
-    	System.out.println("Verify The Site Name Title Should Be: " + siteName);
-    	Assert.assertEquals(waitUntilElementToBeClickable(siteNameTitle).getText().trim(), siteName);
+    public void verifyHomeLogoShouldDisplay(){
+    	System.out.println("Verify Home Logo Should Display");
+    	waitUntilElementToBeClickable(logo);
+    	Assert.assertEquals(logo.getAttribute("src"), LOGO_IMAGE);
+    	Assert.assertTrue(logo.isDisplayed());
     }
     
-    public void clickOnButtonRegisterLogin(){
-    	System.out.println("CLick on button register login");
-    	clickElement(buttonRegisterLogin);
+    public void clickLogin(){
+    	System.out.println("Click button login");
+    	buttonLogin.click();
+    }
+    
+    public void verifyUserNameLoggedInShouldBe(String name){
+    	System.out.println("verify User Name Logged In Should Be: " + name);
+    	Assert.assertEquals(waitUntilElementToBeClickable(userLoggedIn).getText().trim(), name);
     }
 }

@@ -9,7 +9,7 @@ public class Base {
 
 	protected WebDriver driver;
 	protected WebDriverWait wait;
-	public static final int TIMEOUT_IN_SECOND = 30;
+	public static final int TIMEOUT_IN_SECOND = 50;
 	
 	public Base(WebDriver driver) {
 		this.driver = driver;

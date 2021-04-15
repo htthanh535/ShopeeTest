@@ -5,7 +5,6 @@
     <classes>
       <class name="test.LoginTest">
         <methods>
-          <include name="constructerWebDriver"/>
           <include name="loginWithEmptyUserNameAndPassword"/>
           <include name="closeBrowser"/>
           <include name="setup"/>
